@@ -1,0 +1,278 @@
+@import './mixins';
+
+.header {
+  position: fixed;
+  z-index: 25;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--primary-theme-color);
+  box-shadow: 0 0.25rem 0.75rem 0 var(--secondary-shadow-color);
+  border-bottom: 0.0625rem solid var(--inverse-tertiary-text-color);
+  transition: var(--secondary-all-transitions);
+
+  &--open {
+    left: 80%;
+  }
+
+  &--home {
+    background-color: transparent;
+    background-image: linear-gradient(var(--primary-shadow-color), var(--secondary-shadow-color));
+
+    & .header-nav__menu-icon {
+      color: var(--inverse-secondary-text-color);
+    }
+
+    & .header-nav__link-logo-container {
+      color: var(--inverse-secondary-text-color);
+    }
+
+    & .header-nav__menu-link::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -0.25rem;
+      width: 0;
+      height: 0.125rem;
+      background-color: var(--secondary-highlight-color);
+      transition: var(--primary-all-transitions);
+    }
+
+    & .header-nav__menu-link--active::before,
+    & .header-nav__menu-link:hover::before {
+      width: 100%;
+    }
+
+    & .header-nav__person-container {
+      color: var(--inverse-secondary-text-color);
+    }
+  }
+
+  @include desktop() {
+    left: 0;
+
+    &--home {
+      .header-nav__menu-link {
+        color: var(--inverse-tertiary-text-color);
+
+        &--active {
+          color: var(--inverse-secondary-text-color);
+        }
+
+        &:hover {
+          color: var(--inverse-primary-text-color);
+        }
+      }
+    }
+  }
+}
+
+.header-nav {
+  padding: 0.75rem 0;
+
+  @include desktop() {
+    padding: 1rem 0;
+  }
+
+  &__container {
+    @include d-flex-fd-ai-jc-g(row, center, space-between, 0);
+    @include container;
+  }
+
+  &__menu-icon {
+    background-color: transparent;
+    border: 0;
+    @include icon(var(--tertiary-text-color), 1.5rem);
+    padding: 0;
+    cursor: pointer;
+
+    @include desktop() {
+      display: none;
+    }
+  }
+
+  &__link-logo-container {
+    @include text(var(--tertiary-text-color), 900, 1.25rem);
+    line-height: 1.5rem;
+    text-decoration: none;
+
+    @include desktop() {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+  }
+
+  &__menu-link-list-container {
+    position: fixed;
+    z-index: 30;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(var(--primary-shadow-color), var(--secondary-shadow-color));
+    opacity: 0;
+    pointer-events: none;
+    --translate-x-menu-link-list: -100%;
+    cursor: pointer;
+    transition: var(--secondary-all-transitions);
+
+    &--open {
+      opacity: 1;
+      pointer-events: auto;
+      --translate-x-menu-link-list: 0;
+    }
+
+    @include desktop() {
+      position: static;
+      width: auto;
+      height: auto;
+      background-image: none;
+      opacity: 1;
+      pointer-events: auto;
+      --translate-x-menu-link-list: 0;
+    }
+  }
+
+  &__menu-link-list {
+    @include d-flex-fd-ai-jc-g(column, center, center, 2rem);
+    background-image: linear-gradient(to top, var(--primary-theme-color), var(--secondary-theme-color));
+    width: 80%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    transform: translateX(var(--translate-x-menu-link-list));
+    list-style: none;
+    cursor: auto;
+    transition: var(--secondary-all-transitions);
+
+    @include desktop() {
+      flex-direction: row;
+      background-image: none;
+      gap: 1rem;
+      width: auto;
+    }
+  }
+
+  &__menu-link-item {
+    display: flex;
+  }
+
+  &__menu-link {
+    position: relative;
+    @include text(var(--quaternary-text-color), 700, 1rem);
+    text-decoration: none;
+
+    &--active {
+      color: var(--primary-text-color);
+    }
+
+    &:hover {
+      color: var(--tertiary-text-color);
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -0.25rem;
+      width: 0;
+      height: 0.125rem;
+      background-color: var(--secondary-highlight-color);
+      transition: var(--primary-all-transitions);
+    }
+
+    &--active::before,
+    &:hover::before {
+      width: 100%;
+    }
+
+    @include desktop() {
+      font-size: 1.125rem;
+    }
+  }
+
+  &__menu-close-icon {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    @include icon(var(--secondary-text-color), 1.5rem);
+    cursor: pointer;
+
+    @include desktop() {
+      display: none;
+    }
+  }
+
+  &__person-theme-container {
+    @include d-flex-fd-ai-jc-g(row, center, stretch, 0.5rem);
+
+    @include desktop() {
+      gap: 1.5rem;
+    }
+  }
+
+  &__person-container {
+    position: relative;
+    @include icon(var(--tertiary-text-color), 1.5rem);
+  }
+
+  &__person-message {
+    line-height: normal;
+    position: absolute;
+    top: -37.5%;
+    left: -150%;
+    @include button(var(--secondary-button-color), #e302467a, var(--primary-border-radius), 0.75rem, 400, 0.0625em 0.5em, var(--secondary-active-button-color));
+    animation: blink 2.5s linear infinite alternate;
+    transition: var(--secondary-all-transitions);
+
+    @include desktop() {
+      top: -50%;
+      left: 25%;
+    }
+  }
+
+  &__theme {
+    position: relative;
+    @include d-flex-fd-ai-jc-g(row, center, center, 0.25rem);
+    background-color: var(--primary-text-color);
+    border: 0;
+    border-radius: var(--primary-border-radius);
+    padding: 0.125rem 0.375rem;
+    cursor: pointer;
+    transition: var(--primary-all-transitions);
+
+    @include desktop() {
+      gap: 0.375rem;
+      padding: 0.25rem 0.5rem;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      background-color: var(--primary-theme-color);
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 0.125rem var(--primary-shadow-color),
+        0 0 0.25rem 0 var(--primary-shadow-color),
+        0 0 0.375rem 0 var(--primary-shadow-color),
+        0 0 0.5rem 0 var(--primary-shadow-color);
+      transition: var(--primary-all-transitions);
+
+      @include desktop() {
+        width: 1.625rem;
+        height: 1.625rem;
+      }
+    }
+
+    &--active::after {
+      left: 50%;
+    }
+  }
+
+  &__theme-icon {
+    @include icon(var(--primary-button-text-color));
+  }
+}
